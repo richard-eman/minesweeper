@@ -68,20 +68,20 @@ function startGame () {
 // 2. Are all of the mines marked?
 function checkForWin () {
   var cellsHidden
-  cellsHidden = checkCellStillHidden ()
-  if ( cellsHidden == false ){
-    return ( lib.displayMessage('You win!') )
+  cellsHidden = checkCellHidden ()
+  if ( cellsHidden == false ) {
+    return ( lib.displayMessage ('You win!') )
   }
 }
 
-function checkCellStillHidden () {
+function checkCellHidden () {
   var arr = board.cells
-  var foundHidden = arr.find (arr => arr.isMine == false && arr.hidden == true)
-  if ( foundHidden != undefined ){
-    console.group("checkCellStillHidden():")
-    console.log ("There are still hidden cells which aren't mines")
-    console.log(foundHidden)
-    console.groupEnd()
+  var hiddenCell = arr.find (arr => arr.isMine == false && arr.hidden == true)
+  if (hiddenCell != undefined) {
+      console.group ("checkCellHidden():")
+      console.log ("There are still hidden cells which aren't mines")
+      console.log (hiddenCell)
+      console.groupEnd ()
     return ( true )
   }
   else {
