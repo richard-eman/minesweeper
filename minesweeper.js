@@ -74,6 +74,19 @@ function checkForWin () {
   }
 }
 
+function isMineMarked () {
+  var arr = board.cells
+  var unmarkedMine = arr.find ( arr => arr.isMine == true && arr.isMarked == false )
+  if ( unmarkedMine != undefined) {
+    //Mines are all marked
+    return true
+  }
+  else {
+    //Unmarked mines exist
+    return false
+  }
+}
+
 function isCellHidden () {
   var arr = board.cells
   var hiddenCell = arr.find (arr => arr.isMine == false && arr.hidden == true)
