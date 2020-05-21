@@ -40,11 +40,12 @@ var board = {
   ]
 }
 function startGame () {
+  var currentCell
   console.group ("startGame() begin")
   console.log ("Cell amount: " + board.cells.length)
   
   for (i = 0; i < board.cells.length; i++) {
-    var currentCell = board.cells[i]
+    currentCell = board.cells[i]
     console.group("Loop pass: " + i)
       console.log ("cell in:")
       console.log (currentCell)
@@ -54,6 +55,9 @@ function startGame () {
     console.groupEnd()
   }
   console.groupEnd ()
+  // document.addEventListener(click, checkForWin)
+  // document.addEventListener(contextmenu, checkForWin)
+
   // Don't remove this function call: it makes the game work!
   lib.initBoard()
 }
@@ -63,10 +67,10 @@ function startGame () {
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
 function checkForWin () {
-
   // You can use this function call to declare a winner (once you've
   // detected that they've won, that is!)
   //   lib.displayMessage('You win!')
+
 }
 
 // Define this function to count the number of mines around the cell
