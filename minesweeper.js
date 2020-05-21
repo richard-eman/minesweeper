@@ -15,7 +15,7 @@ var board = {
     { row: 2, col: 2, isMine: false, hidden: true},
     { row: 2, col: 3, isMine: false, hidden: true},
     { row: 2, col: 4, isMine: false, hidden: true},
-    { row: 2, col: 5, isMine: false, hidden: true},
+    { row: 2, col: 5, isMine: true, hidden: true},
 
     // row 3
     { row: 3, col: 1, isMine: false, hidden: true},
@@ -29,32 +29,32 @@ var board = {
     { row: 4, col: 2, isMine: false, hidden: true},
     { row: 4, col: 3, isMine: false, hidden: true},
     { row: 4, col: 4, isMine: false, hidden: true},
-    { row: 4, col: 5, isMine: true, hidden: true},
+    { row: 4, col: 5, isMine: false, hidden: true},
 
     // row 5
     { row: 5, col: 1, isMine: false, hidden: true},
     { row: 5, col: 2, isMine: false, hidden: true},
     { row: 5, col: 3, isMine: true, hidden: true},
     { row: 5, col: 4, isMine: true, hidden: true},
-    { row: 5, col: 5, isMine: false, hidden: true},
+    { row: 5, col: 5, isMine: true, hidden: true},
   ]
 }
 function startGame () {
   var currentCell
-  console.group ("startGame() begin")
-  console.log ("Cell amount: " + board.cells.length)
-  
+    console.group ("startGame() begin")
+    console.log ("Cell amount: " + board.cells.length)
+  addIsMarkedToCells ()
   for (i = 0; i < board.cells.length; i++) {
     currentCell = board.cells[i]
-    console.group("Loop pass: " + i)
+      console.group ("Loop pass: " + i)
       console.log ("cell in:")
       console.log (currentCell)
-      currentCell.surroundingMines = countSurroundingMines (currentCell)
+    currentCell.surroundingMines = countSurroundingMines (currentCell)
       console.log ("cell out:")
       console.log (currentCell)
-    console.groupEnd()
+      console.groupEnd()
   }
-  console.groupEnd ()
+    console.groupEnd ()
   document.addEventListener('click', checkForWin)
   document.addEventListener('contextmenu', checkForWin)
 
@@ -67,22 +67,32 @@ function startGame () {
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
 function checkForWin () {
-  var cellsHidden
-  cellsHidden = isCellHidden ()
-  if ( cellsHidden == false ) {
+  var cellsHidden = isCellHidden ()
+  var minesMarked = isMineMarked ()
+  if ( cellsHidden == false && minesMarked == true ) {
     return ( lib.displayMessage ('You win!') )
+  }
+}
+
+function addIsMarkedToCells () {
+  var arr = board.cells
+  for ( i = 0; i < arr.length; i++ ) {
+    if ( arr[i].isMine == true ) {
+      board.cells[i].isMarked = false
+    }
   }
 }
 
 function isMineMarked () {
   var arr = board.cells
   var unmarkedMine = arr.find ( arr => arr.isMine == true && arr.isMarked == false )
-  if ( unmarkedMine != undefined) {
-    //Mines are all marked
+  if ( unmarkedMine == undefined) {
+    console.log ("No unmarked mines exist")
+    console.log (unmarkedMine)
     return true
   }
   else {
-    //Unmarked mines exist
+    console.log (unmarkedMine)
     return false
   }
 }
@@ -91,10 +101,7 @@ function isCellHidden () {
   var arr = board.cells
   var hiddenCell = arr.find (arr => arr.isMine == false && arr.hidden == true)
   if (hiddenCell != undefined) {
-    console.group ("isCellHidden():")
-      console.log ("There are still hidden cells which aren't mines")
-      console.log (hiddenCell)
-    console.groupEnd ()
+    // If true, there are hidden cells that don't contain mines.
     return ( true )
   }
   else {
@@ -111,15 +118,15 @@ function isCellHidden () {
 function countSurroundingMines (cell) {
   console.group ("countSurroundingMines() start:")
   var surroundingCells = lib.getSurroundingCells (cell.row, cell.col)
-  console.log ("surroundingCells")
-  console.log (surroundingCells)
+    console.log ("surroundingCells")
+    console.log (surroundingCells)
   var surroundingMines = surroundingCells.filter (surroundingCells => surroundingCells.isMine == true)
 
-  console.log ("surroundingMines")
-  console.log (surroundingMines)
-  console.log ("surroundingMines.length")
-  console.log (surroundingMines.length)
-  console.groupEnd()
+    console.log ("surroundingMines")
+    console.log (surroundingMines)
+    console.log ("surroundingMines.length")
+    console.log (surroundingMines.length)
+    console.groupEnd()
   
   return (surroundingMines.length)
 }
